@@ -1,2 +1,12 @@
 body { margin: 0; background-color: white; overflow:hidden; }
 canvas { display: block; }
+button {
+	background-color: white;
+	border: 2px solid black;
+	width: 120px;
+	margin: 10px;
+}
+
+button:hover{
+	background-color: #ddd;
+}
