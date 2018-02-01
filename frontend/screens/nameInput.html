@@ -1,0 +1,11 @@
+<h1>What is your cat's name?</h1>
+<input id="catname" type="text" placeholder="Enter name here" />
+<button id="accept">Accept</button>
+
+<script class="ignoreanim">
+$("#catname").val(gvar.playerName);
+$("#accept").mousedown(function(){
+	gvar.playerName = $("#catname").val();
+	ui.loadui(uidata.confirmName);
+});
+</script>

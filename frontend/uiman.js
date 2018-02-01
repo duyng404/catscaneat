@@ -5,7 +5,7 @@ var ui = {
 
 	loadui:function (theui){
 		ui.nextScreen = theui;
-		$("#game").children().fadeOut(400, ui.cleanup);
+		$("#game").children().not(".ignoreanim").fadeOut(400, ui.cleanup);
 	},
 
 	cleanup: function() {
@@ -17,84 +17,67 @@ var ui = {
 // stores all the screens and all its info
 // also handles the creation of all the screens
 var uidata = {
-	init:function(){
-		// welcome screen
-		uidata.startScreen = new Screen(
-			// name
-			"start screen",
-			// add ele's
-			function() {
-				$("#game").append('<h1>Welcome to the Game</h1>');
-				$("#game").append('<p>'+this.name+'</p>');
-				$("#game").append('<button id="startgame">Start Game</button>');
-			},
-			// attach events
-			function() {
-				$("#startgame").mousedown(function(){
-					ui.loadui(uidata.nameInput);
-				});
-			}
-		);
-
-		// input cat's name
-		uidata.nameInput = new Screen(
-			// name
-			"name input",
-			// drawElements
-			function() {
-				$("#game").append('<h1>What is your cat\'s name?</h1>');
-				$("#game").append('<input id="catname" type="text" placeholder="Enter name here" />');
-				$("#game").append('<button id="accept">Accept</button>');
-				$("#catname").val(gvar.playerName);
-			},
-			// attachEvents
-			function() {
-				$("#accept").mousedown(function(){
-					gvar.playerName = $("#catname").val();
-					ui.loadui(uidata.confirmName);
-				});
-			}
-		);
-
-		// display the previously entered cat's name
-		uidata.confirmName = new Screen(
-			//name
-			"confirm name",
-			// drawElements
-			function() {
-				$("#game").append('<h1>Your cat\'s name is '+gvar.playerName);
-				$("#game").append('<button id="accept">Yes</button>');
-			},
-			// attachEvents
-			function() {
-				$("#accept").mousedown(function(){
-					ui.loadui(uidata.startScreen);
-				});
-			}
-		);
+	screenDir: '/screens/',
+	loadComplete: false,
+	loadedhtml: 0,
+	htmlLoadFinish: function(){
+		uidata.loadedhtml++;
+		if (uidata.loadedhtml==1){uidata.loadComplete = true;}
+	},
+	screenList: [
+		'startScreen',
+		'nameInput',
+		'confirmName',
+		'combat'
+	],
+	init: function(){
+		for (let i of this.screenList){
+			this[i] = new Screen(i);
+		};
 	}
 };
 
 // this model is used to build new screens
-function Screen(name="hello world",addElements=[],attachEvents=function(){}){
+function Screen(name){
 	this.name = name;
-	this.addElements = addElements;
-	this.attachEvents = attachEvents;
+	this.htmlname = uidata.screenDir+this.name+'.html';
+	this.jsname = uidata.screenDir+this.name+'.js';
+	this.data = {};
+	this.loadHtml(this.data);
+	//this.loadJs(this.data);
 };
 
 Screen.prototype = {
 	constructor: Screen,
+	loadHtml: function(storage) {
+		$.get(this.htmlname, function(data){
+			storage.html = data;
+			uidata.htmlLoadFinish();
+		});
+	},
+	loadJs: function(storage) {
+		$.getScript(this.jsname, function(data){
+			eval("storage.js = " + tmp.toString());
+			uidata.jsLoadFinish();
+		});
+	},
 	preDraw: function(){
 		ui.screenReady = false;
 	},
+	addElements: function(){
+		$("#game").append($.parseHTML(this.data.html,keepScripts=true));
+	},
+	runScript: function(){
+		this.data.js();
+	},
 	animateIn: function(){
-		$("#game").children().hide();
-		$("#game").children().fadeIn();
+		$("#game").children().not(".ignoreanim").hide();
+		$("#game").children().not(".ignoreanim").fadeIn();
 	},
 	drawSelf: function(){
 		this.preDraw();
 		this.addElements();
-		this.attachEvents();
+		//this.runScript();
 		this.animateIn();
 	}
 };

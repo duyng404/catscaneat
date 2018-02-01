@@ -11,11 +11,7 @@ window.onload = function() {
 }
 
 function gameUpdate() {
-	if (ui.screenReady){
+	if (uidata.loadComplete && ui.screenReady){
 		if (ui.nextScreen) ui.nextScreen.drawSelf();
 	}
-}
-
-function loadnewui(){
-	ui.loadui(ui.uitwo);
 }

@@ -1,0 +1,9 @@
+<h1>Your cat's name is <span class="playerName"></span></h1>
+<button id="accept">Yes</button>
+
+<script class="ignoreanim">
+	$(".playerName").text(gvar.playerName);
+	$("#accept").mousedown(function(){
+		ui.loadui(uidata.combat);
+	});
+</script>
