@@ -1,0 +1,22 @@
+{
+  "name": "catscaneat",
+  "version": "1.0.0",
+  "description": "Simple JS roguelite dungeon crawler game featuring post-apocalyptic cats",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ferb96/catscaneat.git"
+  },
+  "author": "Duy Nguyen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ferb96/catscaneat/issues"
+  },
+  "homepage": "https://github.com/ferb96/catscaneat#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
