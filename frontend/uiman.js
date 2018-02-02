@@ -22,7 +22,7 @@ var uidata = {
 	loadedhtml: 0,
 	htmlLoadFinish: function(){
 		uidata.loadedhtml++;
-		if (uidata.loadedhtml==1){uidata.loadComplete = true;}
+		if (uidata.loadedhtml==this.screenList.length){uidata.loadComplete = true;}
 	},
 	screenList: [
 		'startScreen',

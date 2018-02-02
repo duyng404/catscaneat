@@ -1,12 +1,307 @@
-body { margin: 0; background-color: white; overflow:hidden; }
-canvas { display: block; }
+/* ----------- RESET ---------------*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, button {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	box-sizing: border-box;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* ------ LAYOUT -------- */
+
+html{
+	height:100%;
+}
+
+body{
+	width:100%;
+	height:100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+#game{
+	margin:0 auto;
+}
+
+/* ------ COMBAT UI ----- */
+
+#combat{
+	width:100%;
+	height:100%;
+}
+
+#allies{
+	position:relative;
+	width: 100%;
+	height: 18%;
+}
+
+.cat{
+	display:inline-block;
+	width: 15%;
+	height: 100%;
+	margin: 0 10px 0 0;
+	border: 4px solid white;
+	box-sizing: border-box;
+}
+
+.cat .pic{ box-sizing: border-box; }
+
+#allytooltip{
+	display:inline-block;
+	vertical-align:top;
+	width:50%;
+	height:25%;
+	padding: 10px;
+	box-sizing: border-box;
+	border: 10px solid white;
+	background-color: rgba(255, 243, 84, .5);
+	background-clip: padding-box;
+	line-height:1.5rem;
+}
+
+#enemytooltip{
+	display:inline-block;
+	vertical-align:top;
+	width:50%;
+	height:25%;
+	padding: 10px;
+	box-sizing: border-box;
+	border: 10px solid white;
+	background-color: rgba(255, 243, 84, .5);
+	background-clip: padding-box;
+	line-height:1.5rem;
+}
+
+#enemies{
+	position:relative;
+	display:block;
+	width: 100%;
+	height: 18%;
+	text-align: right;
+}
+
+.enemy{
+	display:inline-block;
+	width: 15%;
+	height: 100%;
+	margin: 0 0 0 10px;
+	box-sizing: border-box;
+	border: 4px solid white;
+}
+
+#logs{
+	display:inline-block;
+	vertical-align:top;
+	width:50%;
+	height:25%;
+	padding: 10px;
+	box-sizing: border-box;
+	border: 10px solid white;
+	background-color: rgba(255, 243, 84, .5);
+	background-clip: padding-box;
+}
+
+#stats{
+	display:inline-block;
+	vertical-align:top;
+	width:50%;
+	height:25%;
+	padding: 10px;
+	box-sizing: border-box;
+	border: 10px solid white;
+	background-color: rgba(255, 243, 84, .5);
+}
+
+#hotbar{
+	width:100%;
+	height: 14%;
+	text-align:center;
+}
+
+.hotbaritem{
+	display:inline-block;
+	width: 13%;
+	height: 100%;
+	margin: 0 0 0 10px;
+	box-sizing: border-box;
+	background-color:black;
+}
+
+.healthbar{
+	position: relative;
+	width:100%;
+	height:13%;
+}
+
+.healthbar .bar{
+	height:100%;
+	background-color: #beff6b;
+	transition: width .3s;
+}
+
+.healthbar span{
+	position:absolute;
+	top:0;left:0;width:100%;height:100%;
+	text-align: center;
+	font-size:.75rem;
+	color: #999;
+	font-weight;bold;
+}
+
+.pic{
+	position:relative;
+	width:100%;
+	height:70%;
+	background-size: cover;
+	background-position: center;
+}
+
+.pic .bar{
+	position:absolute;
+	top:0;left:0;width:0%;height:100%;
+	background-color:rgba(112, 112, 112, 0.5);
+	transform: width .3s;
+}
+
+.abilitybar{
+	width:100%;
+	height:17%;
+	box-sizing: border-box;
+}
+
+.abilitybar .bar{
+	height:100%;
+	background-color: grey;
+}
+
+#combat p{
+	margin:0;
+}
+
+.hidden{
+	visibility: hidden;
+}
+
+/* ------ RESPONSIVE ---- */
+
+@media (max-width:1200px){
+	html { font-size: 14px; }
+	#game{width: 700px; height: 560px;}
+}
+@media (min-width: 1000px){
+	html { font-size: 20px; }
+	#game { width: 1000px; height: 800px; }
+}
+
+/* ------ ELEMENTS ------ */
+
 button {
 	background-color: white;
 	border: 2px solid black;
-	width: 120px;
-	margin: 10px;
+	min-width: 120px;
+	min-height: 2rem;
+	line-height: 2rem;
+	margin: 10px auto;
+	font-size: 1.5rem;
+	font-family: "Gochi Hand", Arial, sans-serif;
+	padding: 0 50px;
 }
 
 button:hover{
 	background-color: #ddd;
+}
+
+/* -------------- FONTS & FORMATTING -------------- */
+
+body{
+	font-family: "Open Sans", Arial, sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6{
+	font-family: "Gochi Hand", Arial, sans-serif;
+	font-weight: 700;
+}
+
+h1{
+	font-size: 2rem;
+	line-height: 2rem;
+	margin: 0;
+	text-align: center;
+}
+
+h2{
+	font-size: 2rem;
+	line-height: 2rem;
+	margin: 2rem 0 0;
+}
+
+h3{
+	font-size: 1.5rem;
+	line-height: 1.5rem;
+	margin: 1rem 0 0;
+}
+
+h4,h5,h6{
+	font-size: 1.2rem;
+	line-height: 1.5rem;
+	margin: 1rem 0 0;
+	font-style: italic;	
+}
+
+p{
+	margin: .75rem 0 0;
+}
+
+a{
+	text-decoration: none;
+	color: #00B6CE;
+}
+
+a:visited{
+	color: #00B6CE;
+}
+
+a:hover{
+	color: #99c2ff;
 }
